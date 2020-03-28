@@ -167,19 +167,21 @@
 
 
 
-<?xml version="1.0" encoding="utf-8"?>
+```
+`<?xml version="1.0" encoding="utf-8"?>`
 
-<color name="colorPrimary">#6200EE</color>
-<color name="colorPrimaryDark">#3700B3</color>
-<color name="colorAccent">#03DAC5</color>
-<color name="colorBlack">#000000</color>
-<color name="colorRed">#E80C0C</color>
-<color name="colorYellow">#ECDB6F</color>
-<color name="colorGreen">#90EC6F</color>
-<color name="colorBlue">#6F7CEC</color>
-<color name="colorViolet">#D316A4</color>
-<color name="colorGray">#999999</color>
-</resources>
+`<color name="colorPrimary">#6200EE</color>`
+`<color name="colorPrimaryDark">#3700B3</color>`
+`<color name="colorAccent">#03DAC5</color>`
+`<color name="colorBlack">#000000</color>`
+`<color name="colorRed">#E80C0C</color>`
+`<color name="colorYellow">#ECDB6F</color>`
+`<color name="colorGreen">#90EC6F</color>`
+`<color name="colorBlue">#6F7CEC</color>`
+`<color name="colorViolet">#D316A4</color>`
+`<color name="colorGray">#999999</color>`
+`</resources>`
+```
 
 
 
@@ -291,6 +293,7 @@
 
 2.2 string.xml文件
 
+```
 `<resources>`
     `<string name="app_name">My Application</string>`
     `<string name="to" />`
@@ -303,7 +306,8 @@
     `<string name="green">GREEN</string>`
     `<string name="indigo">INDIGO</string>`
     `<string name="violet">VIOLET</string>`
-`</resources>`
+`</resources>
+```
 
 
 
@@ -311,18 +315,19 @@
 
 
 
-`<resources>`
-    `<color name="colorPrimary">#6200EE</color>`
-    `<color name="colorPrimaryDark">#3700B3</color>`
-    `<color name="colorAccent">#03DAC5</color>`
-    `<color name="colorBlack">#000000</color>`
-    `<color name="colorRed">#E80C0C</color>`
-    `<color name="colorYellow">#ECDB6F</color>`
-    `<color name="colorGreen">#90EC6F</color>`
-    `<color name="colorBlue">#6F7CEC</color>`
-    `<color name="colorViolet">#D316A4</color>`
-    `<color name="colorGray">#999999</color>`
-`</resources>`
+```
+`<?xml version="1.0" encoding="utf-8"?>`
+`<resources><color name="colorPrimary">#6200EE</color>`
+`<color name="colorPrimaryDark">#3700B3</color>`
+`<color name="colorAccent">#03DAC5</color>`
+`<color name="colorBlack">#000000</color>`
+`<color name="colorRed">#E80C0C</color>`
+`<color name="colorYellow">#ECDB6F</color>`
+`<color name="colorGreen">#90EC6F</color>`
+`<color name="colorBlue">#6F7CEC</color>`
+`<color name="colorViolet">#D316A4</color>`
+`<color name="colorGray">#999999</color></resources>`
+```
 
 2.4 运行结果
 
@@ -494,6 +499,7 @@
 
 
 
+```
 `<?xml version="1.0" encoding="utf-8"?>`
 `<resources><color name="colorPrimary">#6200EE</color>`
 `<color name="colorPrimaryDark">#3700B3</color>`
@@ -505,6 +511,7 @@
 `<color name="colorBlue">#6F7CEC</color>`
 `<color name="colorViolet">#D316A4</color>`
 `<color name="colorGray">#999999</color></resources>`
+```
 
 
 

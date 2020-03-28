@@ -4,5 +4,7 @@
 
 
 
-basic文件夹：https://github.com/letmeccyck/Cloudcomputing/tree/master/basic
+**实验一文件夹：**https://github.com/letmeccyck/Android/tree/master/1.basic
+
+**实验二文件夹：**https://github.com/letmeccyck/Android/tree/master/2.layout
 
