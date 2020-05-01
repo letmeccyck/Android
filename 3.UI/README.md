@@ -60,7 +60,7 @@ android:layout_height="match_parent">
 ```
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -70,6 +70,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private String[] names = new String[]
             {"Lion","Tiger","Monkey","Dog","Cat","Elephant"};
@@ -95,18 +96,11 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(names[position] + "单击");
+                System.out.println(names[position] + "单击了");
+                Toast toast = Toast.makeText(getApplicationContext(),names[position],Toast.LENGTH_LONG);
+                toastCenter.setGravity(Gravity.CENTER,0,0);
+                toastCenter.show();
             }
-        });
-        list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                Toast toast = Toast.makeText(MainActivity.this, names[position], Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            @Override
             public void onNothingSelected(AdapterView<?> parent)
             {
             }
@@ -119,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 1.4 运行结果
 
-
+<img src="../images/3.1.png" style="zoom:50%;" />
 
 
 
@@ -129,24 +123,25 @@ public class MainActivity extends AppCompatActivity {
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
-
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
-
-<TextView
-    android:id="@+id/show"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"/>
-<Button
-    android:id="@+id/button"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:onClick="customView"
-    android:text="Android" />
-
-</TableLayout>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:onClick="customView"
+        android:text="@string/view"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginBottom="50dp"/>
+    <TextView
+        android:id="@+id/show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="35dp"
+        android:inputType="text" />
+</LinearLayout>
 ```
 
 
@@ -155,25 +150,53 @@ android:layout_height="match_parent">
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TableRow>
-    <EditText
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:selectAllOnFocus="true" />
-    </TableRow>
-    <TableRow>
+        android:layout_height="60dp"
+        android:textSize="30sp"
+        android:text="@string/android_app"
+        android:gravity="center"
+        android:typeface="serif"
+        android:background="#FFFFBB33"
+        />
 
     <EditText
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"/>
-    </TableRow>
-</TableLayout>
+        android:hint="@string/username"
+        android:selectAllOnFocus="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="20dp" />
+
+</LinearLayout>
+
+//strings.xml
+resources>
+    <string name="app_name">AlertDialog</string>
+    <string name="android_app">ANDROID APP</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="view">自定义对话框</string>
+</resources>
 ```
 
 
@@ -184,13 +207,10 @@ android:layout_height="match_parent">
 
 ```
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.app.AlertDialog;
 import android.view.View;
-import android.widget.TableLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -201,27 +221,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         show = findViewById(R.id.show);
     }
+    private AlertDialog.Builder setPositiveButton(AlertDialog.Builder builder)
+    {
+        return builder.setPositiveButton("Sign in", (dialog, which) -> show.setText("登录"));
+    }
+    private AlertDialog.Builder setNegativeButton(AlertDialog.Builder builder)
+    {
+        return builder.setNegativeButton("Cancel", (dialog, which) -> show.setText("取消"));
+    }
     public void customView(View source)
     {
-        TableLayout  logininfo ;
-           logininfo     = (TableLayout) getLayoutInflater().inflate(R.layout.login, null);
-        new AlertDialog.Builder(this)
-                .setTitle("Andorid")
-                .setView(logininfo)
-                .setPositiveButton("Sign in", (dialog, which) -> {show.setText("Login");
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> {show.setText("Cancel");
-                })
-                .create().show();
+        LinearLayout loginForm = (LinearLayout) getLayoutInflater().inflate(R.layout.login, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(loginForm);
+        setPositiveButton(builder);
+        setNegativeButton(builder).create().show();
     }
 }
 ```
 
-2.4 运行结果
+2. 5运行结果
 
+<img src="../images/3.2.png" style="zoom: 50%;" />
 
+<img src="../images/3.3.png" style="zoom:50%;" />
 
-
+<img src="../images/3.4.png" style="zoom:50%;" />
 
 **使用XML定义菜单**
 
@@ -235,11 +259,11 @@ public class MainActivity extends AppCompatActivity {
     android:orientation="vertical">
     <TextView
         android:id="@+id/txt"
-        android:padding="20dp"
+        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="35sp"
-        android:text="===t===e===s===t======" />
+        android:textSize="20sp"
+        android:text="用于测试的内容" />
 </LinearLayout>
 ```
 
@@ -275,9 +299,9 @@ public class MainActivity extends AppCompatActivity {
     {
         SubMenu fontMenu = menu.addSubMenu("字体大小");
         fontMenu.setHeaderTitle("选择字体大小");
-        fontMenu.add(0, FONT_10, 0, "10号");
-        fontMenu.add(0, FONT_16, 0, "16号");
-        fontMenu.add(0, FONT_20, 0, "20号");
+        fontMenu.add(0, FONT_10, 0, "小");
+        fontMenu.add(0, FONT_16, 0, "中");
+        fontMenu.add(0, FONT_20, 0, "大");
         menu.add(0, PLAIN_ITEM, 0, "普通菜单项");
         SubMenu colorMenu = menu.addSubMenu("字体颜色");
         colorMenu.setHeaderTitle("选择字体颜色");
@@ -297,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
             case FONT_BLACK: text.setTextColor(Color.BLACK); break;
             case PLAIN_ITEM:
                 Toast.makeText(MainActivity.this,
-                        "您点击了普通菜单项", Toast.LENGTH_SHORT)
+                        "普通菜单项", Toast.LENGTH_SHORT)
                         .show();
                break;
         }
@@ -310,9 +334,13 @@ public class MainActivity extends AppCompatActivity {
 
 3.3 运行结果
 
-![](../images/2.3.png)
+<img src="../images/3.6.png" style="zoom:50%;" />
 
+<img src="../images/3.7.png" style="zoom:50%;" />
 
+<img src="../images/3.8.png" style="zoom:50%;" />
+
+<img src="../images/3.9.png" style="zoom:50%;" />
 
 **4.创建上下文操作模式（ActionMode）的上下文菜单**
 
@@ -534,7 +562,7 @@ public class MainActivity extends AppCompatActivity {
 
 3.3 运行结果
 
-![](../images/2.3.png)
+<img src="../images/3.10.png" style="zoom:50%;" />
 
 
 
