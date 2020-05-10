@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">webview</string>
+    <string name="browse" />
+    <string name="inputUrl" />
+    <string name="input" />
+    <string name="btn_browse" />
+    <string name="hint_edit" />
+    <string name="web_url">请输入网址</string>
+    <string name="go">转到</string>
+</resources>
