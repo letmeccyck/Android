@@ -11,7 +11,7 @@
 
 **1.NoteList中显示条目增加时间戳显示核心代码**
 
-1.1 增加时间戳显示：
+1.1 增加时间戳显示：在布局文件noteslist_item.xml中添加线性布局，显示时间的textview控件
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -55,28 +55,15 @@
 </LinearLayout>
 ```
 
-1. 2NotePadProvider.java文件
+1. 2 NotePadProvider.java文件
+
+   因为数据库NotePad已经定义了时间COLUMN_NAME_CREATE_DATE，修改时间字段COLUMN_NAME_MODIFICATION_DATE，同样NotePadProvider.java文件的oncreate 函数的创建日志表中也创建了这两个字段，接下来只要在NotePadProvider.java的insert函数中将时间戳转换为时间格式插入
+   并把values.put把获得的datetime赋给字段CREATE_DATE和MODIFICATION_DATE。
 
 ```
- @Override
-    public Uri insert(Uri uri, ContentValues initialValues) {
-        // Validates the incoming URI. Only the full provider URI is allowed for inserts.
-        if (sUriMatcher.match(uri) != NOTES) {
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
 
-        // A map to hold the new record's values.
-        ContentValues values;
-
-        // If the incoming values map is not null, uses it for the new values.
-        if (initialValues != null) {
-            values = new ContentValues(initialValues);
-
-        } else {
-            // Otherwise, create a new value map
-            values = new ContentValues();
-        }
-        // Gets the current system time in milliseconds（核心代码）
+      // Gets the current system time in milliseconds（核心代码）
+        
         Long now = Long.valueOf(System.currentTimeMillis());
         Date date = new Date(now); //获取时间
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -92,50 +79,20 @@
             values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, dateTime);
         }
 
-        // If the values map doesn't contain a title, sets the value to the default title.
-        if (values.containsKey(NotePad.Notes.COLUMN_NAME_TITLE) == false) {
-            Resources r = Resources.getSystem();
-            values.put(NotePad.Notes.COLUMN_NAME_TITLE, r.getString(android.R.string.untitled));
-        }
-
-        // If the values map doesn't contain note text, sets the value to an empty string.
-        if (values.containsKey(NotePad.Notes.COLUMN_NAME_NOTE) == false) {
-            values.put(NotePad.Notes.COLUMN_NAME_NOTE, "");
-        }
-
-        // 新建笔记，背景默认为白色
-        //if (values.containsKey(NotePad.Notes.COLUMN_NAME_BACK_COLOR) == false) {
-         //   values.put(NotePad.Notes.COLUMN_NAME_BACK_COLOR, NotePad.Notes.DEFAULT_COLOR);
-       // }
-        // Opens the database object in "write" mode.
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-
-        // Performs the insert and returns the ID of the new note.
-        long rowId = db.insert(
-                NotePad.Notes.TABLE_NAME,        // The table to insert into.
-                NotePad.Notes.COLUMN_NAME_NOTE,  // A hack, SQLite sets this column value to null
-                // if values is empty.
-                values                           // A map of column names, and the values to insert
-                // into the columns.
-        );
-        // If the insert succeeded, the row ID exists.
-        if (rowId > 0) {
-            // Creates a URI with the note ID pattern and the new row ID appended to it.
-            Uri noteUri = ContentUris.withAppendedId(NotePad.Notes.CONTENT_ID_URI_BASE, rowId);
-
-            // Notifies observers registered against this provider that the data changed.
-            getContext().getContentResolver().notifyChange(noteUri, null);
-            return noteUri;
-        }
-
-        // If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
-        throw new SQLException("Failed to insert row into " + uri);
-    }
 ```
 
 
 
-1.3 运行结果
+1.3 
+
+因为在修改日志内容时也会修改时间，所以在日志编辑类NoteEditor.java的updateNote函数中也要加上修改日志后更新时间的代码
+
+        Long now = Long.valueOf(System.currentTimeMillis());
+        Date date = new Date(now);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        String dateTime = format.format(date);
+        values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, dateTime);
+1.4运行结果
 
 <img src="../images/5.1.jpg" style="zoom:50%;" />
 
@@ -157,9 +114,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 
-/**
- * Created by c7 on 2019/5/15.
- */
+
 public class NoteSearch  extends ListActivity  implements SearchView.OnQueryTextListener{
     private static final String[] PROJECTION = new String[]{
             NotePad.Notes._ID, // 0
